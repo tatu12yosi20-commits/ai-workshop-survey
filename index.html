@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI講習会 事前アンケート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#6a6f76; --line:#e3dfd6;
+  --accent:#2f6f5e; --accent-weak:#e6f0ec; --accent-ink:#ffffff; --err:#b3261e; --err-weak:#fbeaea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --card:#1f2226; --ink:#e8e6e1; --muted:#a0a4aa; --line:#33373d;
+    --accent:#6fbfa5; --accent-weak:#203a33; --accent-ink:#0f1a17; --err:#f2a39c; --err-weak:#3a2220;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181b; --card:#1f2226; --ink:#e8e6e1; --muted:#a0a4aa; --line:#33373d;
+  --accent:#6fbfa5; --accent-weak:#203a33; --accent-ink:#0f1a17; --err:#f2a39c; --err-weak:#3a2220;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.7;font-size:16px}
+.wrap{max-width:640px;margin:0 auto;padding:28px 16px 64px}
+header{margin-bottom:20px}
+.eyebrow{font-size:13px;color:var(--accent);font-weight:700;letter-spacing:.08em}
+h1{font-size:24px;line-height:1.4;margin:6px 0 10px}
+.lead{color:var(--muted);font-size:14px;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:12px;background:var(--accent-weak);color:var(--accent);padding:4px 10px;border-radius:999px;font-weight:500}
+.progress{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;margin-bottom:6px}
+.bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.progress small{display:block;color:var(--muted);font-size:12px;margin-top:4px;text-align:right}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px}
+.q.invalid{border-color:var(--err);background:linear-gradient(var(--err-weak),var(--err-weak)) top/100% 4px no-repeat, var(--card)}
+.q h2{font-size:16px;margin:0 0 4px;display:flex;gap:8px;align-items:baseline}
+.q h2 .n{color:var(--accent);font-weight:700;font-size:14px;min-width:22px}
+.req{font-size:11px;color:var(--err);font-weight:700}
+.opt-tag{font-size:11px;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted);margin:0 0 10px 30px}
+.opts{display:grid;gap:8px;margin-left:30px}
+@media (max-width:420px){.opts,.hint{margin-left:0}}
+.opts.cols2{grid-template-columns:1fr 1fr}
+label.o{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:15px;transition:border-color .15s,background .15s}
+label.o:hover{border-color:var(--accent)}
+label.o input{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:none}
+label.o:has(input:checked){border-color:var(--accent);background:var(--accent-weak)}
+label.o:has(input:disabled){opacity:.45;cursor:not-allowed}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-left:30px}
+@media (max-width:420px){.scale{margin-left:0}}
+.scale label.o{flex-direction:column;justify-content:center;gap:2px;padding:10px 4px;text-align:center;font-weight:700}
+.scale label.o input{position:absolute;opacity:0;pointer-events:none}
+.scale-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:6px 0 0 30px}
+@media (max-width:420px){.scale-cap{margin-left:0}}
+textarea,input[type=text]{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:96px;resize:vertical}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.q > textarea{margin-left:30px;width:calc(100% - 30px)}
+@media (max-width:420px){.q > textarea{margin-left:0;width:100%}}
+.other{margin-top:4px}
+.err{display:none;color:var(--err);font-size:13px;margin:8px 0 0 30px;font-weight:500}
+.q.invalid .err{display:block}
+.counter{font-size:12px;color:var(--muted);margin:6px 0 0 30px}
+button.submit{display:block;width:100%;margin-top:20px;padding:15px;font:inherit;font-size:16px;font-weight:700;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+button.submit:disabled{opacity:.6;cursor:progress}
+.formerr{display:none;color:var(--err);font-size:14px;margin-top:10px;text-align:center}
+.done{display:none;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:40px 20px;margin-top:20px}
+.done .mark{width:56px;height:56px;border-radius:50%;background:var(--accent-weak);color:var(--accent);display:grid;place-items:center;margin:0 auto 14px;font-size:28px;font-weight:700}
+.done h2{margin:0 0 6px;font-size:20px}
+.done p{margin:0;color:var(--muted);font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">AI講習会 事前アンケート</div>
+    <h1>当日の内容を、みなさんに合わせて決めたいです</h1>
+    <p class="lead">回答は3分ほどで終わります。自由記述以外は選ぶだけです。</p>
+    <div class="meta">
+      <span class="chip">本番：11/20（金）19:00〜20:00</span>
+      <span class="chip">締切：11/4（水）</span>
+    </div>
+  </header>
+
+  <div class="progress" aria-hidden="true"><div class="bar"><i id="bar"></i></div><small id="ptext">0 / 7 必須項目</small></div>
+
+  <form id="f" novalidate>
+    <section class="q" data-req="radio" data-name="name">
+      <h2><span class="n">Q1</span>お名前 <span class="req">必須</span></h2>
+      <div class="opts cols2" style="grid-template-columns:repeat(3,1fr)">
+        <label class="o"><input type="radio" name="name" value="竹中">竹中</label>
+        <label class="o"><input type="radio" name="name" value="渡辺">渡辺</label>
+        <label class="o"><input type="radio" name="name" value="小川">小川</label>
+      </div>
+      <p class="err">お名前を選んでください</p>
+    </section>
+
+    <section class="q" data-req="check" data-name="ai">
+      <h2><span class="n">Q2</span>普段使っているAI <span class="req">必須</span></h2>
+      <p class="hint">当てはまるものすべて</p>
+      <div class="opts cols2">
+        <label class="o"><input type="checkbox" name="ai" value="ChatGPT">ChatGPT</label>
+        <label class="o"><input type="checkbox" name="ai" value="Claude">Claude</label>
+        <label class="o"><input type="checkbox" name="ai" value="Gemini">Gemini</label>
+        <label class="o"><input type="checkbox" name="ai" value="Copilot">Copilot</label>
+        <label class="o"><input type="checkbox" name="ai" value="Perplexity">Perplexity</label>
+        <label class="o"><input type="checkbox" name="ai" value="その他" data-other="aiOther">その他</label>
+        <label class="o" style="grid-column:1/-1"><input type="checkbox" name="ai" value="使っていない" data-exclusive>使っていない</label>
+      </div>
+      <div class="opts other" id="aiOtherWrap" hidden><input type="text" id="aiOther" placeholder="その他のAI名" maxlength="100"></div>
+      <p class="err">1つ以上選んでください</p>
+    </section>
+
+    <section class="q" data-req="radio" data-name="paid">
+      <h2><span class="n">Q3</span>有料版を使っていますか <span class="req">必須</span></h2>
+      <div class="opts">
+        <label class="o"><input type="radio" name="paid" value="有料版を使用中">有料版を使用中</label>
+        <label class="o"><input type="radio" name="paid" value="無料版のみ">無料版のみ</label>
+        <label class="o"><input type="radio" name="paid" value="課金を検討中">課金を検討中</label>
+        <label class="o"><input type="radio" name="paid" value="使っていない">AI自体を使っていない</label>
+      </div>
+      <p class="err">1つ選んでください</p>
+    </section>
+
+    <section class="q" data-req="radio" data-name="freq">
+      <h2><span class="n">Q4</span>AIを使う頻度 <span class="req">必須</span></h2>
+      <div class="opts cols2">
+        <label class="o"><input type="radio" name="freq" value="ほぼ毎日">ほぼ毎日</label>
+        <label class="o"><input type="radio" name="freq" value="週に数回">週に数回</label>
+        <label class="o"><input type="radio" name="freq" value="月に数回">月に数回</label>
+        <label class="o"><input type="radio" name="freq" value="ほとんど使わない">ほとんど使わない</label>
+      </div>
+      <p class="err">1つ選んでください</p>
+    </section>
+
+    <section class="q" data-name="use">
+      <h2><span class="n">Q5</span>主な用途 <span class="opt-tag">任意</span></h2>
+      <p class="hint">当てはまるものすべて</p>
+      <div class="opts cols2">
+        <label class="o"><input type="checkbox" name="use" value="調べもの">調べもの</label>
+        <label class="o"><input type="checkbox" name="use" value="文章作成・メール">文章・メール</label>
+        <label class="o"><input type="checkbox" name="use" value="アイデア出し">アイデア出し</label>
+        <label class="o"><input type="checkbox" name="use" value="仕事の資料・Excel">仕事の資料・Excel</label>
+        <label class="o"><input type="checkbox" name="use" value="画像生成">画像生成</label>
+        <label class="o"><input type="checkbox" name="use" value="勉強・語学">勉強・語学</label>
+        <label class="o"><input type="checkbox" name="use" value="プログラミング">プログラミング</label>
+        <label class="o"><input type="checkbox" name="use" value="その他" data-other="useOther">その他</label>
+      </div>
+      <div class="opts other" id="useOtherWrap" hidden><input type="text" id="useOther" placeholder="その他の用途" maxlength="100"></div>
+    </section>
+
+    <section class="q" data-req="radio" data-name="level">
+      <h2><span class="n">Q6</span>自分のAIレベル <span class="req">必須</span></h2>
+      <div class="scale">
+        <label class="o"><input type="radio" name="level" value="1">1</label>
+        <label class="o"><input type="radio" name="level" value="2">2</label>
+        <label class="o"><input type="radio" name="level" value="3">3</label>
+        <label class="o"><input type="radio" name="level" value="4">4</label>
+        <label class="o"><input type="radio" name="level" value="5">5</label>
+      </div>
+      <div class="scale-cap"><span>ほぼ初めて</span><span>使いこなしている</span></div>
+      <p class="err">1つ選んでください</p>
+    </section>
+
+    <section class="q" data-req="check" data-name="want" data-max="3">
+      <h2><span class="n">Q7</span>講習で特に知りたいこと <span class="req">必須</span></h2>
+      <p class="hint">上位3つまで</p>
+      <div class="opts">
+        <label class="o"><input type="checkbox" name="want" value="AIごとの違い・使い分け">AIごとの違い・使い分け</label>
+        <label class="o"><input type="checkbox" name="want" value="無料版と有料版の違い">無料版と有料版の違い</label>
+        <label class="o"><input type="checkbox" name="want" value="プロンプトの書き方">プロンプト（指示）の書き方</label>
+        <label class="o"><input type="checkbox" name="want" value="仕事での活用例">仕事での活用例</label>
+        <label class="o"><input type="checkbox" name="want" value="画像・動画生成">画像・動画の生成</label>
+        <label class="o"><input type="checkbox" name="want" value="安全な使い方・情報漏えい">安全な使い方・情報漏えい</label>
+        <label class="o"><input type="checkbox" name="want" value="最新のAIニュース">最新のAIニュース</label>
+      </div>
+      <p class="counter" id="wantCount">0 / 3 選択中</p>
+      <p class="err">1つ以上選んでください</p>
+    </section>
+
+    <section class="q" data-name="trouble">
+      <h2><span class="n">Q8</span>今AIで困っていること・聞いてみたいこと <span class="opt-tag">任意</span></h2>
+      <textarea id="trouble" maxlength="1000" placeholder="例：答えが長すぎて読むのが大変、どこまで信用していいかわからない"></textarea>
+    </section>
+
+    <section class="q" data-name="topic">
+      <h2><span class="n">Q9</span>当日AIで試してみたいお題 <span class="opt-tag">任意</span></h2>
+      <textarea id="topic" maxlength="1000" placeholder="例：旅行の計画、仕事のメール、献立"></textarea>
+    </section>
+
+    <section class="q" data-req="radio" data-name="device">
+      <h2><span class="n">Q10</span>当日の端末 <span class="req">必須</span></h2>
+      <div class="opts">
+        <label class="o"><input type="radio" name="device" value="PCを持参">PCを持参できる</label>
+        <label class="o"><input type="radio" name="device" value="スマホのみ">スマホのみ</label>
+        <label class="o"><input type="radio" name="device" value="なし">端末なし</label>
+      </div>
+      <p class="err">1つ選んでください</p>
+    </section>
+
+    <button class="submit" id="submit" type="submit">回答を送信する</button>
+    <p class="formerr" id="formerr"></p>
+  </form>
+
+  <div class="done" id="done" role="status">
+    <div class="mark">✓</div>
+    <h2>ありがとうございました！</h2>
+    <p>いただいた回答をもとに当日の内容を準備します。<br>11/20（金）19:00にお会いしましょう。</p>
+  </div>
+
+  <footer>回答は講習会の準備にのみ使います</footer>
+</div>
+
+<script>
+// ===== 設定：GASのウェブアプリURL（https://script.google.com/macros/s/AKfycbxLIB-j12EIjQakdnk6rAEiDd5cBO91GrQYOgSRY5AcV1fMKZdfRub3Vk-3trZ3Lk5FSw/exec）を貼る =====
+const GAS_URL = "ここにGASのウェブアプリURLを貼る";
+
+const form = document.getElementById('f');
+const reqSections = [...form.querySelectorAll('.q[data-req]')];
+
+const valuesOf = name => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+const isAnswered = sec => valuesOf(sec.dataset.name).length > 0;
+
+function updateProgress(){
+  const n = reqSections.filter(isAnswered).length;
+  document.getElementById('bar').style.width = (n / reqSections.length * 100) + '%';
+  document.getElementById('ptext').textContent = `${n} / ${reqSections.length} 必須項目`;
+}
+
+// 「その他」入力欄の表示切替
+form.querySelectorAll('input[data-other]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const wrap = document.getElementById(cb.dataset.other + 'Wrap');
+    wrap.hidden = !cb.checked;
+    if (cb.checked) document.getElementById(cb.dataset.other).focus();
+  });
+});
+
+// 「使っていない」は他の選択肢と排他
+form.querySelectorAll('input[data-exclusive]').forEach(ex => {
+  const group = form.querySelectorAll(`input[name="${ex.name}"]`);
+  group.forEach(cb => cb.addEventListener('change', () => {
+    if (cb === ex && ex.checked) {
+      group.forEach(o => { if (o !== ex) o.checked = false; });
+      document.getElementById('aiOtherWrap').hidden = true;
+    } else if (cb !== ex && cb.checked) {
+      ex.checked = false;
+    }
+  }));
+});
+
+// Q7：最大3つ
+const wantMax = 3;
+const wants = form.querySelectorAll('input[name="want"]');
+wants.forEach(cb => cb.addEventListener('change', () => {
+  const n = valuesOf('want').length;
+  wants.forEach(o => { o.disabled = !o.checked && n >= wantMax; });
+  document.getElementById('wantCount').textContent = `${n} / ${wantMax} 選択中`;
+}));
+
+form.addEventListener('change', e => {
+  const sec = e.target.closest('.q');
+  if (sec && sec.classList.contains('invalid') && isAnswered(sec)) sec.classList.remove('invalid');
+  updateProgress();
+});
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const formerr = document.getElementById('formerr');
+  formerr.style.display = 'none';
+
+  const missing = reqSections.filter(s => !isAnswered(s));
+  reqSections.forEach(s => s.classList.toggle('invalid', missing.includes(s)));
+  if (missing.length) {
+    missing[0].scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const withOther = (name, otherId) => valuesOf(name).map(v =>
+    v === 'その他' && document.getElementById(otherId).value.trim()
+      ? `その他（${document.getElementById(otherId).value.trim()}）` : v);
+
+  const payload = {
+    name: valuesOf('name')[0],
+    ai: withOther('ai', 'aiOther'),
+    paid: valuesOf('paid')[0],
+    freq: valuesOf('freq')[0],
+    use: withOther('use', 'useOther'),
+    level: valuesOf('level')[0],
+    want: valuesOf('want'),
+    trouble: document.getElementById('trouble').value.trim(),
+    topic: document.getElementById('topic').value.trim(),
+    device: valuesOf('device')[0],
+    ua: navigator.userAgent
+  };
+
+  const btn = document.getElementById('submit');
+  btn.disabled = true; btn.textContent = '送信中…';
+  try {
+    if (!/^https:\/\/script\.google\.com\//.test(GAS_URL)) throw new Error('送信先が未設定です（GAS_URL）');
+    // text/plain で送るとCORSのプリフライトが発生せず、GASで受け取れる
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    form.style.display = 'none';
+    document.querySelector('.progress').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+    window.scrollTo({top:0, behavior:'smooth'});
+  } catch (err) {
+    formerr.textContent = '送信できませんでした：' + err.message + '　時間をおいてもう一度お試しください。';
+    formerr.style.display = 'block';
+    btn.disabled = false; btn.textContent = '回答を送信する';
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
